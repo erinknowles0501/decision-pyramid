@@ -2,10 +2,13 @@
     <div id="app">
         <DecisionOption
             v-for="(option, index) in options"
-            :key="index"
+            :key="`option-${index}`"
             v-model="options[index]"
         />
-        <DecisionPicker />
+        <DecisionPicker
+            v-for="decision in getPickersNumber"
+            :key="`decision-${decision}`"
+        />
     </div>
 </template>
 
@@ -23,6 +26,17 @@ export default {
         return {
             options: ["", "", "", "", ""],
         };
+    },
+    computed: {
+        getPickersNumber() {
+            let count = 0;
+            var i;
+            for (i = 1; i < this.options.length; i++) {
+                count += this.options.length - i;
+            }
+            console.log("count", count);
+            return count;
+        },
     },
 };
 </script>

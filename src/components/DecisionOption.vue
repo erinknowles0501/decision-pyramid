@@ -21,7 +21,7 @@
 
 <script>
 export default {
-    name: "decision-picker",
+    name: "decision-option",
     props: ["value"],
     data() {
         return {
