@@ -6,12 +6,13 @@
             v-model="option.text"
         />
         <DecisionPicker
-            v-for="decision in getDecisions"
+            v-for="decision in decisions"
             :key="`decision-${decision.option1.id}-${decision.option2.id}`"
             v-model="decision.decision"
             :option1="decision.option1"
             :option2="decision.option2"
         />
+        <pre>{{ decisions }}</pre>
     </div>
 </template>
 
@@ -28,13 +29,14 @@ export default {
     data() {
         return {
             options: [
-                { text: "", id: 1 },
-                { text: "", id: 2 },
-                { text: "", id: 3 },
-                { text: "", id: 4 },
-                { text: "", id: 5 },
+                { text: "one", id: 1 },
+                { text: "two", id: 2 },
+                { text: "three", id: 3 },
+                { text: "four", id: 4 },
+                { text: "five", id: 5 },
+                { text: "six", id: 6 },
             ],
-            decisions: [],
+            decisions: null,
         };
     },
     computed: {
@@ -46,10 +48,12 @@ export default {
             }
             return count;
         },
-        getDecisions() {
-            // for Vue reactivity, push to this temp array, and set this.decisions to this at the end.
-            let tmpDecisions = [];
-
+    },
+    created() {
+        this.generateDecisions();
+    },
+    methods: {
+        generateDecisions() {
             // for every option there is,
             // create a decision object that compares that option
             // against every other option.
@@ -59,15 +63,14 @@ export default {
             // create decision object for option+[every option between currentOption+1 and optoins.length-1]
             // loop again at second option+[every option between currentOption+1 and options.length-1]
             // keep doing this until second-last option (last option will have no matches)
-            this.options.forEach((option) => {
-                let currentOptionI = this.options.indexOf(option);
-                console.log("currentOptionI", currentOptionI);
 
-                let compareOptionI = currentOptionI + 1;
-                console.log("compareOptionI start", compareOptionI);
+            // for Vue reactivity - instead of pushing directly to .decisions, set whole thing equal to this temp array.
+            let tmpDecisions = [];
+
+            this.options.forEach((option) => {
+                let compareOptionI = this.options.indexOf(option) + 1;
+
                 while (compareOptionI < this.options.length) {
-                    // get next option in list
-                    console.log("current compare option i", compareOptionI);
                     tmpDecisions.push({
                         option1: option,
                         option2: this.options[compareOptionI],
@@ -75,22 +78,20 @@ export default {
                     });
                     compareOptionI += 1;
                 }
-                //}
             });
-            console.log("tempdecisions", tmpDecisions);
-            return tmpDecisions;
+            this.decisions = tmpDecisions;
         },
     },
 };
 </script>
 
 <style>
-#app {
+/* #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
-}
+} */
 </style>
