@@ -26,7 +26,11 @@
                 class="display-decisions"
                 :style="`grid-column: ${options.length - 1} / span 2`"
             >
-                <pre>{{ countVotesForEach }}</pre>
+                <p v-for="(vote, name) in countVotesForEach" :key="name">
+                    <b>{{ getTextFromId(name) }}</b
+                    >:
+                    {{ vote }}
+                </p>
             </div>
         </div>
     </div>
@@ -74,6 +78,9 @@ export default {
         this.generateDecisions();
     },
     methods: {
+        getTextFromId(id) {
+            return this.options.find((option) => option.id == id).text;
+        },
         generateDecisions() {
             // for every option there is,
             // create a decision object that compares that option
