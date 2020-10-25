@@ -21,7 +21,6 @@
                 :option2="decision.option2"
             />
         </div>
-        <pre>{{ decisions }}</pre>
     </div>
 </template>
 
