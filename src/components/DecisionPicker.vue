@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <div
+        class="picker"
+        :style="`grid-row: ${option2.id}; grid-column: ${option1.id}`"
+    >
         <button @click="select(option1)">
             {{ option1.text }}
         </button>
@@ -21,3 +24,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.picker {
+    background-color: green;
+}
+</style>

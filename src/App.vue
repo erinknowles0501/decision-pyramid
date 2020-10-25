@@ -1,17 +1,26 @@
 <template>
     <div id="app">
-        <DecisionOption
-            v-for="option in options"
-            :key="`option-${option.id}`"
-            v-model="option.text"
-        />
-        <DecisionPicker
-            v-for="decision in decisions"
-            :key="`decision-${decision.option1.id}-${decision.option2.id}`"
-            v-model="decision.decision"
-            :option1="decision.option1"
-            :option2="decision.option2"
-        />
+        <div
+            :style="
+                'display: grid; grid-template-columns: ' +
+                '100px '.repeat(options.length)
+            "
+        >
+            <DecisionOption
+                v-for="option in options"
+                :key="`option-${option.id}`"
+                v-model="option.text"
+                :id="option.id"
+            />
+
+            <DecisionPicker
+                v-for="decision in decisions"
+                :key="`decision-${decision.option1.id}-${decision.option2.id}`"
+                v-model="decision.decision"
+                :option1="decision.option1"
+                :option2="decision.option2"
+            />
+        </div>
         <pre>{{ decisions }}</pre>
     </div>
 </template>
@@ -86,12 +95,12 @@ export default {
 </script>
 
 <style>
-/* #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-} */
+.option,
+.picker {
+    height: 100px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
 </style>

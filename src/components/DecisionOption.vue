@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="option" :style="`grid-row: ${id}; grid-column: ${id}`">
         <div
             @click="settingOption = true"
             v-if="!settingOption"
@@ -22,7 +22,7 @@
 <script>
 export default {
     name: "decision-option",
-    props: ["value"],
+    props: ["value", "id"],
     data() {
         return {
             settingOption: false,
@@ -50,3 +50,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.option {
+    background-color: red;
+}
+</style>
