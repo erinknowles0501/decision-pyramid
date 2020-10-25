@@ -20,6 +20,14 @@
                 :option1="decision.option1"
                 :option2="decision.option2"
             />
+
+            <div
+                v-if="decisions"
+                class="display-decisions"
+                :style="`grid-column: ${options.length - 1} / span 2`"
+            >
+                <pre>{{ countVotesForEach }}</pre>
+            </div>
         </div>
     </div>
 </template>
@@ -48,13 +56,18 @@ export default {
         };
     },
     computed: {
-        getPickersNumber() {
-            let count = 0;
-            var i;
-            for (i = 1; i < this.options.length; i++) {
-                count += this.options.length - i;
-            }
-            return count;
+        countVotesForEach() {
+            let votes = {};
+            this.decisions.forEach((decision) => {
+                if (decision.decision) {
+                    if (!votes[decision.decision.id]) {
+                        votes[decision.decision.id] = 1;
+                    } else {
+                        votes[decision.decision.id] += 1;
+                    }
+                }
+            });
+            return votes;
         },
     },
     created() {
@@ -101,5 +114,13 @@ export default {
     padding: 10px;
     border: 1px solid black;
     box-sizing: border-box;
+}
+
+.display-decisions {
+    border: 1px solid black;
+    padding: 1em;
+    grid-row: 1 / span 2;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: -10;
 }
 </style>
