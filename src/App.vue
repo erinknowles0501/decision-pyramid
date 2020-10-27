@@ -11,6 +11,7 @@
                 :key="`option-${option.id}`"
                 v-model="option.text"
                 :id="option.id"
+                :hsl="option.hsl"
             />
 
             <DecisionPicker
@@ -49,12 +50,12 @@ export default {
     data() {
         return {
             options: [
-                { text: "one", id: 1 },
-                { text: "two", id: 2 },
-                { text: "three", id: 3 },
-                { text: "four", id: 4 },
-                { text: "five", id: 5 },
-                { text: "six", id: 6 },
+                { text: "one", id: 1, hsl: {} },
+                { text: "two", id: 2, hsl: {} },
+                { text: "three", id: 3, hsl: {} },
+                { text: "four", id: 4, hsl: {} },
+                { text: "five", id: 5, hsl: {} },
+                { text: "six", id: 6, hsl: {} },
             ],
             decisions: null,
         };
@@ -75,11 +76,21 @@ export default {
         },
     },
     created() {
+        // TODO: Generate options based on default number of options.
         this.generateDecisions();
+        this.generateColors();
     },
     methods: {
         getTextFromId(id) {
             return this.options.find((option) => option.id == id).text;
+        },
+        generateColors() {
+            const colorsNum = this.options.length;
+            this.options.map((option, index) => {
+                option.hsl.hue = (360 / colorsNum) * index + 20; // 20 is arbitrary here, just want to avoid normal rainbow.
+                option.hsl.saturation = 70;
+                option.hsl.lightness = 60;
+            });
         },
         generateDecisions() {
             // for every option there is,
@@ -119,12 +130,10 @@ export default {
     height: 100px;
     width: 100%;
     padding: 10px;
-    border: 1px solid black;
     box-sizing: border-box;
 }
 
 .display-decisions {
-    border: 1px solid black;
     padding: 1em;
     grid-row: 1 / span 2;
     background: rgba(255, 255, 255, 0.5);
