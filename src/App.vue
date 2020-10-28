@@ -180,12 +180,16 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Trispace:wght@600&display=swap");
+
 .option,
 .picker {
     height: 100px;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
 }
 
 .display-decisions {

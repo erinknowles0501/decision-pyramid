@@ -17,7 +17,9 @@
                 "
                 @mouseleave="$emit('highlight', { option: null, id: null })"
             >
-                <span>{{ option1.id }}</span>
+                <span :style="`color: hsl(${color}, 100%, 20%)`">{{
+                    option1.id
+                }}</span>
             </button>
             <button
                 @click="select(option2)"
@@ -30,7 +32,9 @@
                 "
                 @mouseleave="$emit('highlight', { option: null, id: null })"
             >
-                <span>{{ option2.id }}</span>
+                <span :style="`color: hsl(${color}, 100%, 20%)`">{{
+                    option2.id
+                }}</span>
             </button>
         </div>
         <div
@@ -108,18 +112,24 @@ export default {
     clip-path: polygon(0% 0%, 0% 100%, 100% 0%);
 }
 
-.picker-area button:first-child span {
-    position: absolute;
-    top: 1em;
-    left: 1em;
-}
-
 .picker-area button:last-child {
     clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
 }
 
-.picker-area button:last-child span {
+.picker-area button span {
     position: absolute;
+    opacity: 0.6;
+    font-weight: 600;
+    font-size: 1.4em;
+    font-family: "Trispace";
+}
+
+.picker-area button:first-child span {
+    top: 1em;
+    left: 1em;
+}
+
+.picker-area button:last-child span {
     bottom: 1em;
     right: 1em;
 }

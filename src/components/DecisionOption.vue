@@ -98,6 +98,8 @@ export default {
     color: rgba(255, 255, 255, 0.3);
     font-size: 75px;
     padding: 0.1em;
+    font-family: "Trispace";
+    font-weight: 600;
 }
 
 .display-option {
