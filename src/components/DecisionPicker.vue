@@ -42,9 +42,9 @@
             v-else
             @click="localValue = originalValue"
             class="picker-selected"
-            :style="`color: hsla(${color}, 100%, 20%, 0.5)`"
+            :style="`color: hsla(${color}, 100%, 20%, 0.3)`"
         >
-            {{ localValue.text }}
+            <span>{{ localValue.letter }}</span>
         </div>
     </div>
 </template>
@@ -128,16 +128,19 @@ export default {
     font-weight: 600;
     font-size: 1.4em;
     font-family: "Trispace";
+    transform: rotate(-45deg);
 }
 
 .picker-area button:first-child span {
     top: 1em;
     left: 1em;
+    transform-origin: center left;
 }
 
 .picker-area button:last-child span {
     bottom: 1em;
     right: 1em;
+    transform-origin: center right;
 }
 
 .picker-selected {
@@ -150,7 +153,12 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 0.9em;
+    font-size: 1.9em;
+    font-weight: 500;
+}
+
+.picker-selected span {
+    transform: rotate(-45deg);
 }
 
 .picker-selected:hover {

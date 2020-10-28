@@ -13,9 +13,7 @@
             class="display-option"
             :style="`color: hsl(${color.hue}, 100%, 15%)`"
         >
-            <span>{{
-                localOption ? localOption : "Click here to set an option"
-            }}</span>
+            <span>{{ localOption }}</span>
         </div>
         <div v-if="settingOption" style="height: 100%">
             <textarea

@@ -1,35 +1,37 @@
 <template>
     <div id="app">
-        <div
-            :style="
-                'position: relative; padding-top: 150px; display: grid; grid-template-rows: 100px; grid-template-columns: ' +
-                '100px '.repeat(options.length)
-            "
-        >
-            <DecisionOption
-                v-for="option in options"
-                :key="`option-${option.id}`"
-                v-model="option.text"
-                :id="option.id"
-                :letter="option.letter"
-                :hsl="option.hsl"
-                :votes="countVotesForEach[option.id]"
-                :isHighlighted="
-                    currentHighlighted
-                        ? currentHighlighted.id === option.id
-                        : false
+        <div id="app-wrap">
+            <div
+                :style="
+                    'position: relative; display: grid; grid-template-rows: 100px; grid-template-columns: ' +
+                    '100px '.repeat(options.length)
                 "
-            />
+            >
+                <DecisionOption
+                    v-for="option in options"
+                    :key="`option-${option.id}`"
+                    v-model="option.text"
+                    :id="option.id"
+                    :letter="option.letter"
+                    :hsl="option.hsl"
+                    :votes="countVotesForEach[option.id]"
+                    :isHighlighted="
+                        currentHighlighted
+                            ? currentHighlighted.id === option.id
+                            : false
+                    "
+                />
 
-            <DecisionPicker
-                v-for="decision in decisions"
-                :key="`decision-${decision.option1.id}-${decision.option2.id}`"
-                v-model="decision.decision"
-                :option1="decision.option1"
-                :option2="decision.option2"
-                @highlight="currentHighlighted = $event"
-                :isHighlighted="pickerHighlights.includes(decision)"
-            />
+                <DecisionPicker
+                    v-for="decision in decisions"
+                    :key="`decision-${decision.option1.id}-${decision.option2.id}`"
+                    v-model="decision.decision"
+                    :option1="decision.option1"
+                    :option2="decision.option2"
+                    @highlight="currentHighlighted = $event"
+                    :isHighlighted="pickerHighlights.includes(decision)"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -83,7 +85,7 @@ export default {
             let options = [];
             for (var i = 0; i < this.optionsNumber; i++) {
                 options.push({
-                    text: "Click to change",
+                    text: "Click here to set an option",
                     id: i + 1,
                     letter: letters[i],
                     hsl: {},
@@ -179,6 +181,21 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Trispace:wght@600&display=swap");
+
+html,
+body {
+    height: 100%;
+}
+
+#app {
+    position: absolute;
+    right: 0;
+}
+
+#app-wrap {
+    transform: rotate(45deg);
+    transform-origin: top left;
+}
 
 .option,
 .picker {
