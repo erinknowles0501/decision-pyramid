@@ -41,7 +41,8 @@
         <div
             v-else
             @click="localValue = originalValue"
-            style="height: 100%; width: 100%"
+            class="picker-selected"
+            :style="`color: hsla(${color}, 100%, 20%, 0.5)`"
         >
             {{ localValue.text }}
         </div>
@@ -133,5 +134,22 @@ export default {
 .picker-area button:last-child span {
     bottom: 1em;
     right: 1em;
+}
+
+.picker-selected {
+    height: 100%;
+    width: 100%;
+    padding: 0.5em;
+    box-sizing: border-box;
+    cursor: default;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.picker-selected:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 </style>

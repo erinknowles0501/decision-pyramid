@@ -8,8 +8,11 @@
             @click="settingOption = true"
             v-if="!settingOption"
             class="display-option"
+            :style="`color: hsl(${color.hue}, 100%, 15%)`"
         >
-            {{ localOption ? localOption : "Click here to set an option" }}
+            <span>{{
+                localOption ? localOption : "Click here to set an option"
+            }}</span>
         </div>
         <div v-if="settingOption" style="height: 100%">
             <textarea
@@ -89,7 +92,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 20;
+    z-index: 10;
     color: rgba(255, 255, 255, 0.3);
     font-size: 75px;
     padding: 0.1em;
@@ -98,6 +101,7 @@ export default {
 }
 
 .display-option {
+    position: relative;
     cursor: default;
     height: 100%;
     width: 100%;
@@ -105,6 +109,17 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+.display-option span {
+    position: absolute;
+    z-index: 20;
 }
 
 .display-option:hover {
@@ -119,5 +134,6 @@ export default {
     border: 0;
     background: rgba(255, 255, 255, 0.4);
     padding: 0.5em;
+    font-size: 1.1em;
 }
 </style>
