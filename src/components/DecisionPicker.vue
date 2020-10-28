@@ -16,7 +16,9 @@
                         other: option2.id,
                     })
                 "
-                @mouseleave="$emit('highlight', { option: null, id: null })"
+                @mouseleave="
+                    $emit('highlight', { option: null, id: null, other: null })
+                "
             >
                 <span :style="`color: hsl(${color}, 100%, 20%)`">{{
                     option1.letter
@@ -31,7 +33,9 @@
                         other: option1.id,
                     })
                 "
-                @mouseleave="$emit('highlight', { option: null, id: null })"
+                @mouseleave="
+                    $emit('highlight', { option: null, id: null, other: null })
+                "
             >
                 <span :style="`color: hsl(${color}, 100%, 20%)`">{{
                     option2.letter

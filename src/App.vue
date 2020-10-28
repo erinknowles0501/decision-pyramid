@@ -175,6 +175,21 @@ export default {
         currentHighlighted() {
             this.generatePickerHighlights();
         },
+        decisions: {
+            handler() {
+                if (
+                    this.decisions.filter((decision) => !!decision.decision)
+                        .length === this.decisions.length
+                ) {
+                    this.currentHighlighted = {
+                        option: null,
+                        id: null,
+                        other: null,
+                    };
+                }
+            },
+            deep: true,
+        },
     },
 };
 </script>
