@@ -106,6 +106,10 @@ export default {
     background: transparent;
 }
 
+.picker-area button:active {
+    outline: none;
+}
+
 .picker-area button:hover {
     background: rgba(255, 255, 255, 0.3);
 }

@@ -2,7 +2,7 @@
     <div id="app">
         <div
             :style="
-                'position: relative; display: grid; grid-template-columns: ' +
+                'position: relative; padding-top: 150px; display: grid; grid-template-rows: 100px; grid-template-columns: ' +
                 '100px '.repeat(options.length)
             "
         >
@@ -13,6 +13,7 @@
                 :id="option.id"
                 :letter="option.letter"
                 :hsl="option.hsl"
+                :votes="countVotesForEach[option.id]"
                 :isHighlighted="
                     currentHighlighted
                         ? currentHighlighted.id === option.id
@@ -29,14 +30,6 @@
                 @highlight="currentHighlighted = $event"
                 :isHighlighted="pickerHighlights.includes(decision)"
             />
-
-            <div v-if="decisions" class="display-decisions">
-                <p v-for="(vote, name) in countVotesForEach" :key="name">
-                    <b>{{ getTextFromId(name) }}</b
-                    >:
-                    {{ vote }}
-                </p>
-            </div>
         </div>
     </div>
 </template>
