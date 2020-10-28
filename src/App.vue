@@ -51,7 +51,7 @@ export default {
     data() {
         return {
             options: [],
-            optionsNumber: 6,
+            optionsNumber: 5,
             decisions: null,
             currentHighlighted: null,
             pickerHighlights: [],
