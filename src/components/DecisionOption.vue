@@ -3,7 +3,7 @@
         class="option"
         :style="`background-color: hsl(${color.hue}, ${color.saturation}%, ${color.lightness}%); grid-row: ${id}; grid-column: ${id}`"
     >
-        <div class="display-letter">{{ displayLetter }}</div>
+        <div class="display-letter">{{ letter }}</div>
         <div
             @click="settingOption = true"
             v-if="!settingOption"
@@ -24,9 +24,6 @@
 </template>
 
 <script>
-// TODO: Generate options (in App.vue) with ids as letters, instead of translating them here.
-const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
-
 export default {
     name: "decision-option",
     props: {
@@ -43,6 +40,7 @@ export default {
                 lightness: 0,
             }),
         },
+        letter: String,
         isHighlighted: { type: Boolean, default: false },
     },
     data() {
@@ -58,9 +56,6 @@ export default {
             set(val) {
                 this.$emit("input", val);
             },
-        },
-        displayLetter() {
-            return letters[this.id - 1];
         },
         color() {
             return this.isHighlighted

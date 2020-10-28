@@ -11,6 +11,7 @@
                 :key="`option-${option.id}`"
                 v-model="option.text"
                 :id="option.id"
+                :letter="option.letter"
                 :hsl="option.hsl"
                 :isHighlighted="
                     currentHighlighted
@@ -41,6 +42,8 @@
 </template>
 
 <script>
+const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+
 import DecisionOption from "./components/DecisionOption.vue";
 import DecisionPicker from "./components/DecisionPicker.vue";
 
@@ -52,14 +55,8 @@ export default {
     },
     data() {
         return {
-            options: [
-                { text: "one", id: 1, hsl: {} },
-                { text: "two", id: 2, hsl: {} },
-                { text: "three", id: 3, hsl: {} },
-                { text: "four", id: 4, hsl: {} },
-                { text: "five", id: 5, hsl: {} },
-                { text: "six", id: 6, hsl: {} },
-            ],
+            options: [],
+            optionsNumber: 6,
             decisions: null,
             currentHighlighted: null,
             pickerHighlights: [],
@@ -81,13 +78,25 @@ export default {
         },
     },
     created() {
-        // TODO: Generate options based on default number of options.
+        this.generateOptions();
         this.generateDecisions();
         this.generateColors();
     },
     methods: {
         getTextFromId(id) {
             return this.options.find((option) => option.id == id).text;
+        },
+        generateOptions() {
+            let options = [];
+            for (var i = 0; i < this.optionsNumber; i++) {
+                options.push({
+                    text: "Click to change",
+                    id: i + 1,
+                    letter: letters[i],
+                    hsl: {},
+                });
+            }
+            this.options = options;
         },
         generateColors() {
             const colorsNum = this.options.length;
@@ -126,8 +135,6 @@ export default {
             this.decisions = tmpDecisions;
         },
         generatePickerHighlights() {
-            console.log("hi there!!");
-
             // if (!this.currentHighlight || !this.decisions) {
             //     return false;
             // }
@@ -153,8 +160,6 @@ export default {
                     }
                 }
             });
-
-            console.log(highlightedDecisions);
             this.pickerHighlights = highlightedDecisions;
 
             // return true if currenthighlighted is option 1 matches decision option 1 id, or option2+option2

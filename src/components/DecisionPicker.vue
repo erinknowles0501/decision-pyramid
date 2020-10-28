@@ -6,6 +6,7 @@
         }%); grid-row: ${option2.id}; grid-column: ${option1.id}`"
     >
         <div v-if="!localValue" class="picker-area">
+            <!-- TODO: Could refactor this to be v-for="option in [option1, option2]" -->
             <button
                 @click="select(option1)"
                 @mouseover="
@@ -18,7 +19,7 @@
                 @mouseleave="$emit('highlight', { option: null, id: null })"
             >
                 <span :style="`color: hsl(${color}, 100%, 20%)`">{{
-                    option1.id
+                    option1.letter
                 }}</span>
             </button>
             <button
@@ -33,7 +34,7 @@
                 @mouseleave="$emit('highlight', { option: null, id: null })"
             >
                 <span :style="`color: hsl(${color}, 100%, 20%)`">{{
-                    option2.id
+                    option2.letter
                 }}</span>
             </button>
         </div>
