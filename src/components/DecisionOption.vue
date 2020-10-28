@@ -64,7 +64,7 @@ export default {
         },
         color() {
             return this.isHighlighted
-                ? { ...this.hsl, saturation: 90, lightness: 90 }
+                ? { ...this.hsl, saturation: 80, lightness: 80 }
                 : this.hsl;
         },
     },

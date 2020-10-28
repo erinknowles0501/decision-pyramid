@@ -1,13 +1,35 @@
 <template>
     <div
         class="picker"
-        :style="`background-color: hsl(${color}, 65%, 70%); grid-row: ${option2.id}; grid-column: ${option1.id}`"
+        :style="`background-color: hsl(${color}, ${isHighlighted ? 90 : 65}%, ${
+            isHighlighted ? 85 : 75
+        }%); grid-row: ${option2.id}; grid-column: ${option1.id}`"
     >
         <div v-if="!localValue" class="picker-area">
-            <button @click="select(option1)">
+            <button
+                @click="select(option1)"
+                @mouseover="
+                    $emit('highlight', {
+                        option: 1,
+                        id: option1.id,
+                        other: option2.id,
+                    })
+                "
+                @mouseleave="$emit('highlight', { option: null, id: null })"
+            >
                 <span>{{ option1.id }}</span>
             </button>
-            <button @click="select(option2)">
+            <button
+                @click="select(option2)"
+                @mouseover="
+                    $emit('highlight', {
+                        option: 2,
+                        id: option2.id,
+                        other: option1.id,
+                    })
+                "
+                @mouseleave="$emit('highlight', { option: null, id: null })"
+            >
                 <span>{{ option2.id }}</span>
             </button>
         </div>
@@ -24,7 +46,7 @@
 <script>
 export default {
     name: "decision-picker",
-    props: ["value", "option1", "option2"],
+    props: ["value", "option1", "option2", "isHighlighted"],
     data() {
         return {
             originalValue: null,

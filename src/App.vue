@@ -2,7 +2,7 @@
     <div id="app">
         <div
             :style="
-                'display: grid; grid-template-columns: ' +
+                'position: relative; display: grid; grid-template-columns: ' +
                 '100px '.repeat(options.length)
             "
         >
@@ -12,6 +12,11 @@
                 v-model="option.text"
                 :id="option.id"
                 :hsl="option.hsl"
+                :isHighlighted="
+                    currentHighlighted
+                        ? currentHighlighted.id === option.id
+                        : false
+                "
             />
 
             <DecisionPicker
@@ -20,13 +25,11 @@
                 v-model="decision.decision"
                 :option1="decision.option1"
                 :option2="decision.option2"
+                @highlight="currentHighlighted = $event"
+                :isHighlighted="pickerHighlights.includes(decision)"
             />
 
-            <div
-                v-if="decisions"
-                class="display-decisions"
-                :style="`grid-column: ${options.length - 1} / span 2`"
-            >
+            <div v-if="decisions" class="display-decisions">
                 <p v-for="(vote, name) in countVotesForEach" :key="name">
                     <b>{{ getTextFromId(name) }}</b
                     >:
@@ -58,6 +61,8 @@ export default {
                 { text: "six", id: 6, hsl: {} },
             ],
             decisions: null,
+            currentHighlighted: null,
+            pickerHighlights: [],
         };
     },
     computed: {
@@ -120,6 +125,56 @@ export default {
             });
             this.decisions = tmpDecisions;
         },
+        generatePickerHighlights() {
+            console.log("hi there!!");
+
+            // if (!this.currentHighlight || !this.decisions) {
+            //     return false;
+            // }
+
+            // generate array of picker combos to highlight based on whether
+            // currentHighlighted.option === 1 && decision.option1 matches currerntHighlighted.id, and same for option2.
+            // Also - if option1, decision option2 should be less than currentHighlighted other (same for opt2)
+            let highlightedDecisions = [];
+            this.decisions.forEach((decision) => {
+                if (this.currentHighlighted.option === 1) {
+                    if (
+                        decision.option1.id === this.currentHighlighted.id &&
+                        decision.option2.id < this.currentHighlighted.other
+                    ) {
+                        highlightedDecisions.push(decision);
+                    }
+                } else if (this.currentHighlighted.option === 2) {
+                    if (
+                        decision.option2.id === this.currentHighlighted.id &&
+                        decision.option1.id > this.currentHighlighted.other
+                    ) {
+                        highlightedDecisions.push(decision);
+                    }
+                }
+            });
+
+            console.log(highlightedDecisions);
+            this.pickerHighlights = highlightedDecisions;
+
+            // return true if currenthighlighted is option 1 matches decision option 1 id, or option2+option2
+            // const option1ShouldHighlight =
+            //     this.currentHightlight.option === 1 &&
+            //     decision.option1.id === this.currentHighlight.id;
+            // const option2ShouldHighlight =
+            //     this.currentHightlight.option === 2 &&
+            //     decision.option2.id === this.currentHighlight.id;
+
+            // console.log("option1?", option1ShouldHighlight);
+            // console.log("option2?", option2ShouldHighlight);
+
+            // return option1ShouldHighlight || option2ShouldHighlight;
+        },
+    },
+    watch: {
+        currentHighlighted() {
+            this.generatePickerHighlights();
+        },
     },
 };
 </script>
@@ -135,8 +190,11 @@ export default {
 
 .display-decisions {
     padding: 1em;
-    grid-row: 1 / span 2;
+    position: absolute;
+    top: 0;
+    right: 0;
     background: rgba(255, 255, 255, 0.5);
     z-index: -10;
+    border: 1px solid rgba(0, 0, 0, 0.5);
 }
 </style>
