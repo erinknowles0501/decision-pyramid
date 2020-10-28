@@ -68,6 +68,7 @@ export default {
     },
     methods: {
         select(option) {
+            this.$emit("highlight", { option: null, id: null, other: null });
             this.$emit("input", option);
         },
     },
