@@ -13,6 +13,9 @@
 			<div
 				:class="['options-menu', { 'options-menu-active': isMenuOpen }]"
 			>
+				<button class="add-option-button" @click="localOptionsNumber++">
+					Add option
+				</button>
 				<img
 					class="menu-close-button"
 					src="../assets/md-close.svg"
@@ -20,9 +23,6 @@
 					width="35"
 					@click="isMenuOpen = false"
 				/>
-				<button class="add-option-button" @click="localOptionsNumber++">
-					Add option
-				</button>
 			</div>
 		</div>
 	</div>
@@ -93,9 +93,12 @@ export default {
 	transition: inherit;
 	opacity: 0;
 	width: 300px;
-	background: white;
-	border-left: 1px solid black;
+	background: #f9f9f9;
+	border-left: 1rem solid rgba(0, 0, 0, 0.2);
 	padding: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 .options-menu-active {
@@ -104,11 +107,8 @@ export default {
 }
 
 .menu-close-button {
-	position: absolute;
-	top: 0;
-	right: 0;
-	z-index: 6;
 	transition: inherit;
+	padding: 0.25rem;
 }
 
 .menu-close-button:hover {

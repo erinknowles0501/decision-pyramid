@@ -46,7 +46,7 @@
 </template>
 
 <script>
-const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]; // More than this is lunacy. Locking maximum options to 12.
 
 import DecisionOption from "./components/DecisionOption.vue";
 import DecisionPicker from "./components/DecisionPicker.vue";
@@ -114,6 +114,12 @@ export default {
 			this.options = options;
 		},
 		addOption() {
+			if (this.options.length > 12) {
+				// Simply too many. No.
+				return;
+				// TODO: Notification.
+			}
+
 			let tempOptions = this.options;
 			tempOptions.push(this.makeNewOption(this.optionsNumber - 1));
 			this.options = tempOptions;
