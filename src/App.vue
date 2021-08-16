@@ -3,12 +3,7 @@
 		<OptionsMenu v-model="optionsNumber" />
 		<div id="app-wrap">
 			<div id="rotate-wrap">
-				<div
-					:style="
-						'position: relative; display: grid; grid-template-rows: 100px; grid-template-columns: ' +
-						'100px '.repeat(options.length)
-					"
-				>
+				<div :style="calcGridStyles">
 					<DecisionOption
 						v-for="option in options"
 						:key="`option-${option.id}`"
@@ -36,6 +31,17 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- <div style="width: 100%; display: flex; position: absolute; top: 90vh">
+			<pre
+				>{{ options.length }} 
+                {{ options }}</pre
+			>
+			<pre
+				>{{ decisions.length }}
+                {{ decisions }}</pre
+			>
+		</div> -->
 	</div>
 </template>
 
@@ -76,6 +82,12 @@ export default {
 			});
 			return votes;
 		},
+		calcGridStyles() {
+			return (
+				"position: relative; display: grid; grid-template-rows: 100px; grid-template-columns: " +
+				"100px ".repeat(this.options.length)
+			);
+		},
 	},
 	created() {
 		this.generateOptions();
@@ -83,11 +95,11 @@ export default {
 		this.generateColors();
 	},
 	methods: {
-		getNewOption(optionNumber) {
+		makeNewOption(optionNumber) {
 			return {
 				text: "Click here to set an option",
-				id: optionNumber,
-				letter: letters[optionNumber - 1],
+				id: optionNumber + 1,
+				letter: letters[optionNumber],
 				hsl: {},
 			};
 		},
@@ -96,16 +108,16 @@ export default {
 		},
 		generateOptions() {
 			let options = [];
-			for (var i = 1; i < this.optionsNumber; i++) {
-				// TODO: Blank option
-				options.push(this.getNewOption(i));
+			for (var i = 0; i < this.optionsNumber; i++) {
+				options.push(this.makeNewOption(i));
 			}
 			this.options = options;
 		},
 		addOption() {
 			let tempOptions = this.options;
-			tempOptions.push(this.getNewOption(this.optionsNumber));
+			tempOptions.push(this.makeNewOption(this.optionsNumber - 1));
 			this.options = tempOptions;
+			this.addNewDecisions();
 			this.generateColors();
 		},
 		generateColors() {
@@ -128,21 +140,37 @@ export default {
 			// keep doing this until second-last option (last option will have no matches)
 
 			// for Vue reactivity - instead of pushing directly to .decisions, set whole thing equal to this temp array.
-			let tmpDecisions = [];
+			let tempDecisions = [];
 
 			this.options.forEach((option) => {
-				let compareOptionI = this.options.indexOf(option) + 1;
+				let compareOptionIteration = this.options.indexOf(option) + 1;
 
-				while (compareOptionI < this.options.length) {
-					tmpDecisions.push({
+				while (compareOptionIteration < this.options.length) {
+					tempDecisions.push({
 						option1: option,
-						option2: this.options[compareOptionI],
+						option2: this.options[compareOptionIteration],
 						decision: null,
 					});
-					compareOptionI += 1;
+					compareOptionIteration += 1;
 				}
 			});
-			this.decisions = tmpDecisions;
+			this.decisions = tempDecisions;
+		},
+		addNewDecisions() {
+			let tempDecisions = JSON.parse(JSON.stringify(this.decisions)); // Simplest/solidest way to copy an object without reference (ie, so altering object 2 doesn't alter object 1..!)
+			const newOption = this.options[this.options.length - 1];
+
+			// create decision objects for each intersection between existing option and new option.
+			let compareOptionIteration = 0;
+			while (compareOptionIteration < newOption.id) {
+				tempDecisions.push({
+					option1: this.options[compareOptionIteration],
+					option2: newOption,
+					decision: null,
+				});
+				compareOptionIteration += 1;
+			}
+			this.decisions = tempDecisions;
 		},
 		generatePickerHighlights() {
 			// generate array of picker combos to highlight based on whether
@@ -206,7 +234,7 @@ body {
 #app-wrap {
 	position: absolute;
 	left: calc(50% - 250px);
-	top: calc(100px + 10vh);
+	top: calc(150px + 10vh);
 }
 
 #rotate-wrap {

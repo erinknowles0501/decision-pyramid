@@ -1,23 +1,29 @@
 <template>
 	<div class="options-wrap">
-		<div
-			:class="[
-				'options-menu-button',
-				{ 'options-button-active': isMenuOpen },
-			]"
-			@click="isMenuOpen = true"
-		>
-			<img src="../assets/md-hamburger.svg" height="50" width="50" />
-		</div>
-		<div :class="['options-menu', { 'options-menu-active': isMenuOpen }]">
-			<img
-				class="menu-close-button"
-				src="../assets/md-close.svg"
-				height="50"
-				width="50"
-				@click="isMenuOpen = false"
-			/>
-			<button @click="localOptionsNumber++">Add option</button>
+		<div class="options-relative">
+			<div
+				:class="[
+					'options-menu-button',
+					{ 'options-button-active': isMenuOpen },
+				]"
+				@click="isMenuOpen = true"
+			>
+				<img src="../assets/md-hamburger.svg" height="50" width="50" />
+			</div>
+			<div
+				:class="['options-menu', { 'options-menu-active': isMenuOpen }]"
+			>
+				<img
+					class="menu-close-button"
+					src="../assets/md-close.svg"
+					height="35"
+					width="35"
+					@click="isMenuOpen = false"
+				/>
+				<button class="add-option-button" @click="localOptionsNumber++">
+					Add option
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -54,6 +60,11 @@ export default {
 	right: 0;
 	padding: 3vh 3vh 0 0;
 	z-index: 10;
+}
+
+.options-relative {
+	position: relative;
+	padding: 3vh 3vh 0 0;
 	transition: all 0.3s;
 }
 
@@ -61,25 +72,30 @@ export default {
 	position: absolute;
 	top: 0;
 	right: 0;
-	padding: 12px;
+	padding: 0.75rem;
 	transition: inherit;
 	z-index: 5;
 }
 
 .options-menu-button:hover {
-	right: 10px;
+	transform: scale(1.1);
 }
 
 .options-button-active {
-	top: -50px;
+	top: -70px;
 	opacity: 0;
 }
 
 .options-menu {
+	position: absolute;
 	top: 100px;
 	right: 0;
 	transition: inherit;
 	opacity: 0;
+	width: 300px;
+	background: white;
+	border-left: 1px solid black;
+	padding: 1rem;
 }
 
 .options-menu-active {
@@ -88,14 +104,28 @@ export default {
 }
 
 .menu-close-button {
-	float: absolute;
+	position: absolute;
 	top: 0;
 	right: 0;
 	z-index: 6;
+	transition: inherit;
 }
 
 .menu-close-button:hover {
-	transition: inherit;
 	transform: scale(1.1);
+}
+
+.add-option-button {
+	font-family: "Roboto";
+	border: 0;
+	background: #e8e8e8;
+	color: #444444;
+	padding: 6px;
+	transition: inherit;
+}
+
+.add-option-button:hover {
+	background: #f2f2f2;
+	color: #999999;
 }
 </style>
