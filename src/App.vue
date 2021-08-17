@@ -6,7 +6,7 @@
 				<div :style="calcGridStyles">
 					<DecisionOption
 						v-for="option in options"
-						:key="`option-${option.id}`"
+						:key="`option-${option.id}-${option.hsl.hue}`"
 						v-model="option.text"
 						:id="option.id"
 						:letter="option.letter"
@@ -31,22 +31,11 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- <div style="width: 100%; display: flex; position: absolute; top: 90vh">
-			<pre
-				>{{ options.length }} 
-                {{ options }}</pre
-			>
-			<pre
-				>{{ decisions.length }}
-                {{ decisions }}</pre
-			>
-		</div> -->
 	</div>
 </template>
 
 <script>
-const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]; // More than this is lunacy. Locking maximum options to 12.
+const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]; // More than this is lunacy. Locking maximum options to this length.
 
 import DecisionOption from "./components/DecisionOption.vue";
 import DecisionPicker from "./components/DecisionPicker.vue";
@@ -114,7 +103,7 @@ export default {
 			this.options = options;
 		},
 		addOption() {
-			if (this.options.length > 12) {
+			if (this.options.length === letters.length) {
 				// Simply too many. No.
 				return;
 				// TODO: Notification.
@@ -124,23 +113,32 @@ export default {
 			tempOptions.push(this.makeNewOption(this.optionsNumber - 1));
 			this.options = tempOptions;
 			this.addNewDecisions();
-			this.generateColors();
 		},
 		generateColors() {
 			const colorsNum = this.options.length;
-			this.options.map((option, index) => {
-				option.hsl.hue = (360 / colorsNum) * index + 20; // 20 is arbitrary here, just want to avoid normal rainbow.
+			//console.log("options len!", this.options.length);
+			let tempOptions = JSON.parse(JSON.stringify(this.options));
+			console.log("tempoptions1", tempOptions);
+			tempOptions = this.options.map((option, index) => {
+				//console.log("index!", index);
+				const optionHue = (360 / colorsNum) * index + 20; // 20 is arbitrary here, just want to avoid normal rainbow.
+				//console.log("optionhue", optionHue);
+				option.hsl.hue = optionHue;
 				option.hsl.saturation = 70;
 				option.hsl.lightness = 60;
+				console.log("option", option);
+				return option;
 			});
+
+			console.log(tempOptions);
+			this.options = tempOptions;
+			//console.log("this.options", this.options);
 		},
 		generateDecisions() {
-			// for every option there is,
-			// create a decision object that compares that option
+			// for every option there is, create a decision object that compares that option
 			// against every other option.
-			// prevent duplicates (ie entries for option1: A, option2: B AND option1: B, option2: A.)
 
-			// start at first option
+			// start at first option,
 			// create decision object for option+[every option between currentOption+1 and options.length-1]
 			// loop again at second option+[every option between currentOption+1 and options.length-1]
 			// keep doing this until second-last option (last option will have no matches)
@@ -177,6 +175,8 @@ export default {
 				compareOptionIteration += 1;
 			}
 			this.decisions = tempDecisions;
+
+			this.generateColors();
 		},
 		generatePickerHighlights() {
 			// generate array of picker combos to highlight based on whether
@@ -222,8 +222,11 @@ export default {
 			},
 			deep: true,
 		},
-		optionsNumber() {
-			this.addOption();
+		optionsNumber(val, oldVal) {
+			if (val > oldVal) {
+				// Only add an option if the number is going up!
+				this.addOption();
+			}
 		},
 	},
 };
