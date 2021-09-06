@@ -166,7 +166,7 @@ export default {
 
 			// create decision objects for each intersection between existing option and new option.
 			let compareOptionIteration = 0;
-			while (compareOptionIteration < newOption.id) {
+			while (compareOptionIteration < newOption.id - 1) {
 				tempDecisions.push({
 					option1: this.options[compareOptionIteration],
 					option2: newOption,
